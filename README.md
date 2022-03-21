@@ -1,7 +1,7 @@
 # Dolby Atmos UI Only Magisk Module
 
 ## Descriptions
-- Dolby Atmos equalizer UI only for any ROM that has Dolby Atmos in-built service like OnePlus stock ROM.
+- Dolby Atmos equalizer UI only for any ROM that has Dolby Atmos in-built service.
 
 ## Screenshots
 - https://t.me/androidryukimodsdiscussions/66074
