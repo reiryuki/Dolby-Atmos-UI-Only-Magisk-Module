@@ -15,7 +15,7 @@
 - Reboot
 
 ## Tested on
-- OnePlus stock ROM
+- OnePlus 8 Pro stock ROM Android 11
 
 ## Optionals
 - https://t.me/androidryukimodsdiscussions/60861
