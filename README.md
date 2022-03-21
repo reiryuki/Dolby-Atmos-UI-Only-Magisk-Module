@@ -1,7 +1,5 @@
 # Dolby Atmos UI Only Magisk Module
 
-# Dolby Atmos Razer Phone 2 Magisk Module
-
 ## Descriptions
 - Dolby Atmos equalizer UI only for any ROM that has Dolby Atmos in-built service.
 
