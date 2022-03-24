@@ -13,7 +13,7 @@ resetprop vendor.audio.dolby.ds2.hardbypass false
 
 sleep 60
 
-PKG=com.dolby.daxui
+PKG=com.dolby.daxappui
 if [ "$API" -gt 29 ]; then
   appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
 fi
