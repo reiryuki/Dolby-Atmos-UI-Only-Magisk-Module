@@ -1,6 +1,6 @@
 id=DolbyAtmosUIOnly
 name=Dolby Atmos UI Only
-version=v1.0-alpha.1
+version=v1.0-beta.1
 versionCode=0
 author=Rei Ryuki the Fixer
 description=Dolby Atmos equalizer UI only for any ROM that has Dolby Atmos in-built service.

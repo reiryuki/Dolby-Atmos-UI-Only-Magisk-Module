@@ -65,11 +65,11 @@ ui_print "- Cleaning..."
 APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
 PKG="com.dolby.daxappui
      com.dolby.daxservice"
-for PKGS in $PKG; do
-  if [ "$BOOTMODE" == true ]; then
-    UNINSTALL=`pm uninstall $PKGS`
-  fi
-done
+if [ "$BOOTMODE" == true ]; then
+  for PKGS in $PKG; do
+    RES=`pm uninstall $PKGS`
+  done
+fi
 for APPS in $APP; do
   rm -f `find /data/dalvik-cache /data/resource-cache -type f -name *$APPS*.apk`
 done
@@ -260,6 +260,18 @@ fi
 MODDIR=$MODPATH/system/vendor/euclid/product/app/$APPS
 replace_dir
 }
+remove_app() {
+FILE=`find $MAGISKTMP/mirror/system_root\
+           $MAGISKTMP/mirror/system\
+           $MAGISKTMP/mirror/product\
+           $MAGISKTMP/mirror/system_ext\
+           $MAGISKTMP/mirror/vendor\ -type f -name $APP.apk`
+if [ "$FILE" ]; then
+  ui_print "- $APP.apk is found"
+  rm -rf `find $MODPATH/system -type d -name $APP`
+  ui_print " "
+fi
+}
 
 # hide
 hide_oat
@@ -267,6 +279,8 @@ APP="MusicFX MotoDolbyV3 DolbyAtmos OPSoundTuner"
 for APPS in $APP; do
   hide_app
 done
+APP=daxService
+remove_app
 
 # audio rotation
 PROP=`getprop audio.rotation`
