@@ -1,5 +1,12 @@
 ui_print " "
 
+# magisk
+if [ -d /sbin/.magisk ]; then
+  MAGISKTMP=/sbin/.magisk
+else
+  MAGISKTMP=`find /dev -mindepth 2 -maxdepth 2 -type d -name .magisk`
+fi
+
 # info
 MODVER=`grep_prop version $MODPATH/module.prop`
 MODVERCODE=`grep_prop versionCode $MODPATH/module.prop`
@@ -25,7 +32,7 @@ fi
 UUID=9d4921da-8225-4f29-aefa-39537a04bcaa
 if [ "$BOOTMODE" == true ]; then
   if ! dumpsys media.audio_flinger | grep -Eq $UUID; then
-    abort "- This ROM doesn't have Dolby Atmos service"
+    abort "- This ROM doesn't have Dolby Atmos service."
   fi
 fi
 
@@ -175,13 +182,6 @@ elif getprop | grep -Eq "permissive.mode\]: \[2"; then
   ui_print " "
 fi
 
-# magisk
-if [ -d /sbin/.magisk ]; then
-  MAGISKTMP=/sbin/.magisk
-else
-  MAGISKTMP=`find /dev -mindepth 2 -maxdepth 2 -type d -name .magisk`
-fi
-
 # function
 hide_oat() {
 for APPS in $APP; do
@@ -265,10 +265,23 @@ FILE=`find $MAGISKTMP/mirror/system_root\
            $MAGISKTMP/mirror/system\
            $MAGISKTMP/mirror/product\
            $MAGISKTMP/mirror/system_ext\
-           $MAGISKTMP/mirror/vendor\ -type f -name $APP.apk`
+           $MAGISKTMP/mirror/vendor\
+           /my_* -type f -name $APP.apk`
 if [ "$FILE" ]; then
   ui_print "- $APP.apk is found"
   rm -rf `find $MODPATH/system -type d -name $APP`
+  ui_print " "
+else
+  if [ -f /vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service ]\
+  || [ -f /odm/bin/hw/vendor.dolby.hardware.dms@2.0-service ]; then
+    ui_print "- Added $APP.apk v2.0"
+  elif [ -f /vendor/bin/hw/vendor.dolby.hardware.dms@1.0-service ]\
+  || [ -f /odm/bin/hw/vendor.dolby.hardware.dms@1.0-service ]; then
+    ui_print "- Added $APP.apk v1.0"
+    cp -rf $MODPATH/system_1.0/* $MODPATH/system
+  else
+    abort "- This module doesn't support the specific Dolby service."
+  fi
   ui_print " "
 fi
 }
@@ -281,6 +294,7 @@ for APPS in $APP; do
 done
 APP=daxService
 remove_app
+rm -rf $MODPATH/system_1.0
 
 # audio rotation
 PROP=`getprop audio.rotation`
