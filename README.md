@@ -8,6 +8,7 @@
 
 ## Requirements
 - Android 9 and up
+- In-built Dolby Atmos service
 - Magisk installed
 
 ## Installation Guide
