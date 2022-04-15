@@ -23,6 +23,19 @@ resetprop vendor.audio.dolby.ds2.hardbypass false
 #resetprop vendor.dolby.mi.metadata.log false
 #resetprop -n persist.vendor.dolby.loglevel 0
 
+# function
+run_service() {
+if getprop | grep "init.svc.$NAME\]: \[stopped"; then
+  start $NAME
+fi
+}
+
+# run
+NAME=dms-hal-2-0
+run_service
+NAME=dms-hal-1-0
+run_service
+
 # wait
 sleep 60
 
