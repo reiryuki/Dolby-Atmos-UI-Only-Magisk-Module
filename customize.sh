@@ -154,16 +154,16 @@ fi
 
 # function
 permissive() {
+SELINUX=`getenforce`
+if [ "$SELINUX" == Enforcing ]; then
+  setenforce 0
   SELINUX=`getenforce`
   if [ "$SELINUX" == Enforcing ]; then
-    setenforce 0
-    SELINUX=`getenforce`
-    if [ "$SELINUX" == Enforcing ]; then
-      abort "! Your device can't be turned to Permissive state."
-    fi
-    setenforce 1
+    abort "! Your device can't be turned to Permissive state."
   fi
-  sed -i '1i\
+  setenforce 1
+fi
+sed -i '1i\
 SELINUX=`getenforce`\
 if [ "$SELINUX" == Enforcing ]; then\
   setenforce 0\
@@ -260,40 +260,38 @@ fi
 MODDIR=$MODPATH/system/vendor/euclid/product/app/$APPS
 replace_dir
 }
-remove_app() {
+
+# hide
+hide_oat
+APP="MusicFX MotoDolbyDax3 MotoDolbyV3 DolbyAtmos OPSoundTuner"
+for APPS in $APP; do
+  hide_app
+done
 FILE=`find $MAGISKTMP/mirror/system_root\
            $MAGISKTMP/mirror/system\
            $MAGISKTMP/mirror/product\
            $MAGISKTMP/mirror/system_ext\
            $MAGISKTMP/mirror/vendor\
-           /my_* -type f -name $APP.apk`
+           /my_* -type f -name daxService.apk`
+           # AudioEffectCenter.apk
 if [ "$FILE" ]; then
-  ui_print "- $APP.apk is found"
-  rm -rf `find $MODPATH/system -type d -name $APP`
+  ui_print "- daxService.apk is found"
   ui_print " "
 else
   if [ -f /vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service ]\
   || [ -f /odm/bin/hw/vendor.dolby.hardware.dms@2.0-service ]; then
-    ui_print "- Added $APP.apk v2.0"
+    ui_print "- Using daxService.apk 2.0"
+    cp -rf $MODPATH/system_2.0/* $MODPATH/system
   elif [ -f /vendor/bin/hw/vendor.dolby.hardware.dms@1.0-service ]\
   || [ -f /odm/bin/hw/vendor.dolby.hardware.dms@1.0-service ]; then
-    ui_print "- Added $APP.apk v1.0"
+    ui_print "- Using daxService.apk 1.0"
     cp -rf $MODPATH/system_1.0/* $MODPATH/system
   else
     abort "- This module doesn't support the specific Dolby service."
   fi
   ui_print " "
 fi
-}
-
-# hide
-hide_oat
-APP="MusicFX MotoDolbyV3 DolbyAtmos OPSoundTuner"
-for APPS in $APP; do
-  hide_app
-done
-APP=daxService
-remove_app
+rm -rf $MODPATH/system_2.0
 rm -rf $MODPATH/system_1.0
 
 # audio rotation

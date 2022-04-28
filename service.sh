@@ -7,13 +7,6 @@ API=`getprop ro.build.version.sdk`
 exec 2>$MODPATH/debug.log
 set -x
 
-# prevent soft reboot
-echo 0 > /proc/sys/kernel/panic
-echo 0 > /proc/sys/kernel/panic_on_oops
-echo 0 > /proc/sys/kernel/panic_on_rcu_stall
-echo 0 > /proc/sys/kernel/panic_on_warn
-echo 0 > /proc/sys/vm/panic_on_oom
-
 # property
 resetprop vendor.audio.dolby.ds2.enabled false
 resetprop vendor.audio.dolby.ds2.hardbypass false
@@ -31,6 +24,8 @@ fi
 }
 
 # run
+#NAME=dms-v36-hal-2-0
+#run_service
 NAME=dms-hal-2-0
 run_service
 NAME=dms-hal-1-0
@@ -47,13 +42,10 @@ fi
 
 # allow
 PKG=com.dolby.daxservice
-if [ "$API" -ge 30 ]; then
-  appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
-fi
-PID=`pidof $PKG`
-if [ $PID ]; then
-  echo -17 > /proc/$PID/oom_adj
-  echo -1000 > /proc/$PID/oom_score_adj
+if pm list packages | grep $PKG ; then
+  if [ "$API" -ge 30 ]; then
+    appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
+  fi
 fi
 
 ) 2>/dev/null
