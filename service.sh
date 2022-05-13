@@ -1,5 +1,3 @@
-(
-
 MODPATH=${0%/*}
 API=`getprop ro.build.version.sdk`
 
@@ -15,6 +13,9 @@ resetprop vendor.audio.dolby.ds2.hardbypass false
 #resetprop vendor.dolby.dap.param.tee false
 #resetprop vendor.dolby.mi.metadata.log false
 #resetprop -n persist.vendor.dolby.loglevel 0
+
+# restart
+killall audioserver
 
 # function
 run_service() {
@@ -47,8 +48,5 @@ if pm list packages | grep $PKG ; then
     appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
   fi
 fi
-
-) 2>/dev/null
-
 
 

@@ -1,12 +1,8 @@
-(
-
-mount /data
 mount -o rw,remount /data
 MODPATH=${0%/*}
 MODID=`echo "$MODPATH" | sed -n -e 's/\/data\/adb\/modules\///p'`
 APP="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
-PKG="com.dolby.daxappui
-     com.dolby.daxservice"
+PKG="com.dolby.daxappui com.dolby.daxservice"
      
 # cleaning
 for PKGS in $PKG; do
@@ -21,7 +17,5 @@ rm -rf /persist/magisk/"$MODID"
 rm -rf /data/unencrypted/magisk/"$MODID"
 rm -rf /cache/magisk/"$MODID"
 rm -rf /data/vendor/dolby
-
-) 2>/dev/null
 
 

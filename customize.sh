@@ -90,19 +90,6 @@ rm -rf /data/unencrypted/magisk/$MODID
 rm -rf /cache/magisk/$MODID
 ui_print " "
 
-# power save
-PROP=`getprop power.save`
-FILE=$MODPATH/system/etc/sysconfig/*
-if [ "$PROP" == 1 ]; then
-  ui_print "- $MODNAME will not be allowed in power save."
-  ui_print "  It may save your battery but decreasing $MODNAME performance."
-  for PKGS in $PKG; do
-    sed -i "s/<allow-in-power-save package=\"$PKGS\"\/>//g" $FILE
-    sed -i "s/<allow-in-power-save package=\"$PKGS\" \/>//g" $FILE
-  done
-  ui_print " "
-fi
-
 # function
 conflict() {
 for NAMES in $NAME; do
@@ -295,15 +282,13 @@ rm -rf $MODPATH/system_2.0
 rm -rf $MODPATH/system_1.0
 
 # audio rotation
-PROP=`getprop audio.rotation`
 FILE=$MODPATH/service.sh
-if [ "$PROP" == 1 ]; then
+if getprop | grep -Eq "audio.rotation\]: \[1"; then
   ui_print "- Activating ro.audio.monitorRotation=true"
   sed -i '1i\
 resetprop ro.audio.monitorRotation true' $FILE
   ui_print " "
 fi
-
 
 
 
