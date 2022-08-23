@@ -1,5 +1,9 @@
 # Dolby Atmos UI Only Magisk Module
 
+## DISCLAIMER
+- Dolby apps and blobs are owned by Dolby™.
+- The MIT license specified here is for the Magisk Module, not for Dolby apps and blobs.
+
 ## Descriptions
 - Dolby Atmos equalizer user interface only for any ROM that has Dolby Atmos in-built service.
 
