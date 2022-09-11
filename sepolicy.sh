@@ -40,6 +40,8 @@ magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } s
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } system_file file { read open getattr execute }"
 magiskpolicy --live "dontaudit zygote { device unlabeled } file write"
 magiskpolicy --live "allow     zygote { device unlabeled } file write"
+magiskpolicy --live "dontaudit init system_file file mounton
+magiskpolicy --live "allow     init system_file file mounton
 
 # chr_file
 magiskpolicy --live "dontaudit { system_app priv_app platform_app untrusted_app_29 untrusted_app_27 untrusted_app } device chr_file { read write open getattr ioctl }"
@@ -55,14 +57,18 @@ magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } {
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } { default_prop boottime_prop } file { read open getattr map }"
 magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } { mnt_vendor_file system_prop } file { read open getattr }"
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } { mnt_vendor_file system_prop } file { read open getattr }"
-magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } audio_prop file read"
-magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } audio_prop file read"
+magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } audio_prop file { read open getattr }"
+magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } audio_prop file { read open getattr }"
 magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } sysfs_wake_lock file { write open }"
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } sysfs_wake_lock file { write open }"
 magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } vendor_default_prop file open"
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } vendor_default_prop file open"
-magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } sysfs_net dir read"
-magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } sysfs_net dir read"
+magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } { sysfs_net sysfs } dir read"
+magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } { sysfs_net sysfs } dir read"
+magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } logd_socket sock_file write"
+magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } logd_socket sock_file write"
+magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } logd unix_stream_socket connectto"
+magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } logd unix_stream_socket connectto"
 magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } { diag_device vendor_diag_device } chr_file { read write open ioctl getattr }"
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } { diag_device vendor_diag_device } chr_file { read write open ioctl getattr }"
 magiskpolicy --live "dontaudit hal_audio_default hal_audio_default capability2 block_suspend"
