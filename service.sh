@@ -15,7 +15,10 @@ resetprop vendor.audio.dolby.ds2.hardbypass false
 #resetprop -n persist.vendor.dolby.loglevel 0
 
 # restart
-killall audioserver
+PID=`pidof audioserver`
+if [ "$PID" ]; then
+  killall audioserver
+fi
 
 # function
 run_service() {
@@ -25,8 +28,6 @@ fi
 }
 
 # run
-#NAME=dms-v36-hal-2-0
-#run_service
 NAME=dms-hal-2-0
 run_service
 NAME=dms-hal-1-0
@@ -40,6 +41,7 @@ PKG=com.dolby.daxappui
 if [ "$API" -ge 30 ]; then
   appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
 fi
+killall $PKG
 
 # allow
 PKG=com.dolby.daxservice
@@ -47,6 +49,7 @@ if pm list packages | grep $PKG ; then
   if [ "$API" -ge 30 ]; then
     appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
   fi
+  killall $PKG
 fi
 
 

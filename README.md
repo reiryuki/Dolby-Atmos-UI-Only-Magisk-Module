@@ -1,4 +1,4 @@
-# Dolby Atmos UI Only Magisk Module
+# Dolby Atmos User Interface Only Magisk Module
 
 ## DISCLAIMER
 - Dolby apps and blobs are owned by Dolby™.
@@ -12,7 +12,7 @@
 
 ## Requirements
 - Android 9 and up
-- In-built Dolby Atmos service
+- In-built Dolby Audio Processing dms-hal-2-0 or dms-hal-1-0 service
 - Magisk installed
 
 ## Installation Guide & Download Link
@@ -30,6 +30,7 @@
 
 ## Support & Bug Report
 - https://t.me/androidryukimodsdiscussions/2618
+- If you don't do above, issues will be closed immediately
 
 ## Tested on
 - OnePlus 8 Pro stock ROM Android 11

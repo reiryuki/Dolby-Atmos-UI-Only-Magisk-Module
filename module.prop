@@ -1,8 +1,8 @@
-id=DolbyAtmosUIOnly
-name=Dolby Atmos UI Only
-version=v1.6
-versionCode=6
+id=DolbyAtmos
+name=Dolby Atmos User Interface Only
+version=v1.7
+versionCode=7
 author=Rei Ryuki the Fixer
-description=Dolby Atmos equalizer UI only for any ROM that has Dolby Atmos in-built service.
+description=Dolby Atmos equalizer user interface only for any ROM that has in-built Dolby Audio Processing service.
 
 
