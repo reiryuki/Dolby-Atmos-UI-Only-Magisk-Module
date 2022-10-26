@@ -5,7 +5,7 @@
 - The MIT license specified here is for the Magisk Module, not for Dolby apps and blobs.
 
 ## Descriptions
-- Dolby Atmos equalizer user interface only for any ROM that has Dolby Atmos in-built service.
+- Dolby Atmos equalizer user interface only for any ROM that has in-built Dolby Audio Processing service.
 
 ## Screenshots
 - https://t.me/androidryukimodsdiscussions/66074
@@ -17,7 +17,6 @@
 
 ## Installation Guide & Download Link
 - Install this module https://www.pling.com/p/1742547/ via Magisk Manager or Recovery
-- Install AML Magisk Module https://zackptg5.com/android.php#aml only if using any other audio mod module
 - Reboot
 
 ## Optionals
