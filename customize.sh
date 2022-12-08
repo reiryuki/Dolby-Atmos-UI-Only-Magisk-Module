@@ -1,6 +1,6 @@
 # boot mode
 if [ "$BOOTMODE" != true ]; then
-  abort "- Please flash via Magisk Manager only!"
+  abort "- Please flash via Magisk app only!"
 fi
 
 # space
@@ -24,9 +24,17 @@ fi
 SYSTEM=`realpath $MIRROR/system`
 PRODUCT=`realpath $MIRROR/product`
 VENDOR=`realpath $MIRROR/vendor`
-SYSTEM_EXT=`realpath $MIRROR/system/system_ext`
-ODM=`realpath /odm`
-MY_PRODUCT=`realpath /my_product`
+SYSTEM_EXT=`realpath $MIRROR/system_ext`
+if [ -d $MIRROR/odm ]; then
+  ODM=`realpath $MIRROR/odm`
+else
+  ODM=`realpath /odm`
+fi
+if [ -d $MIRROR/my_product ]; then
+  MY_PRODUCT=`realpath $MIRROR/my_product`
+else
+  MY_PRODUCT=`realpath /my_product`
+fi
 
 # optionals
 OPTIONALS=/sdcard/optionals.prop
@@ -56,7 +64,7 @@ fi
 UUID=9d4921da-8225-4f29-aefa-39537a04bcaa
 if [ "$BOOTMODE" == true ]; then
   if ! dumpsys media.audio_flinger | grep -Eq $UUID; then
-    abort "- This ROM doesn't have Dolby Atmos service."
+    abort "- This ROM doesn't have Dolby Audio Processing service."
   fi
 fi
 
@@ -71,7 +79,8 @@ fi
 # sepolicy.rule
 FILE=$MODPATH/sepolicy.sh
 DES=$MODPATH/sepolicy.rule
-if [ -f $FILE ] && [ "`grep_prop sepolicy.sh $OPTIONALS`" != 1 ]; then
+if [ "`grep_prop sepolicy.sh $OPTIONALS`" != 1 ]\
+&& [ -f $FILE ]; then
   mv -f $FILE $DES
   sed -i 's/magiskpolicy --live "//g' $DES
   sed -i 's/"//g' $DES
@@ -117,7 +126,7 @@ conflict() {
 for NAMES in $NAME; do
   DIR=/data/adb/modules_update/$NAMES
   if [ -f $DIR/uninstall.sh ]; then
-    . $DIR/uninstall.sh
+    sh $DIR/uninstall.sh
   fi
   rm -rf $DIR
   DIR=/data/adb/modules/$NAMES
@@ -125,7 +134,7 @@ for NAMES in $NAME; do
   touch $DIR/remove
   FILE=/data/adb/modules/$NAMES/uninstall.sh
   if [ -f $FILE ]; then
-    . $FILE
+    sh $FILE
     rm -f $FILE
   fi
   rm -rf /metadata/magisk/$NAMES
@@ -149,18 +158,18 @@ if grep -Eq 'Dolby Atmos Xperia' $FILE; then
 fi
 NAME=MiSound
 FILE=/data/adb/modules/$NAME/module.prop
-if grep -Eq 'Mi Sound and Dolby Atmos' $FILE; then
+if grep -Eq 'and Dolby Atmos' $FILE; then
   conflict
 fi
 
 # function
 cleanup() {
 if [ -f $DIR/uninstall.sh ]; then
-  . $DIR/uninstall.sh
+  sh $DIR/uninstall.sh
 fi
 DIR=/data/adb/modules_update/$MODID
 if [ -f $DIR/uninstall.sh ]; then
-  . $DIR/uninstall.sh
+  sh $DIR/uninstall.sh
 fi
 }
 

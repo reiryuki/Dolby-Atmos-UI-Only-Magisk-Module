@@ -16,7 +16,7 @@
 - Magisk installed
 
 ## Installation Guide & Download Link
-- Install this module https://www.pling.com/p/1742547/ via Magisk Manager
+- Install this module https://www.pling.com/p/1742547/ via Magisk app only
 - Reboot
 
 ## Optionals

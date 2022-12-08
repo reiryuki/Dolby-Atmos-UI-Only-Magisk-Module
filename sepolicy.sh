@@ -79,6 +79,8 @@ magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } l
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } logd unix_stream_socket connectto"
 magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } { diag_device vendor_diag_device } chr_file { read write open ioctl getattr }"
 magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } { diag_device vendor_diag_device } chr_file { read write open ioctl getattr }"
+magiskpolicy --live "dontaudit { hal_audio_default mtk_hal_audio audioserver } device chr_file { read write }"
+magiskpolicy --live "allow     { hal_audio_default mtk_hal_audio audioserver } device chr_file { read write }"
 magiskpolicy --live "dontaudit hal_audio_default hal_audio_default capability2 block_suspend"
 magiskpolicy --live "allow     hal_audio_default hal_audio_default capability2 block_suspend"
 magiskpolicy --live "dontaudit mtk_hal_audio mtk_hal_audio capability2 block_suspend"
