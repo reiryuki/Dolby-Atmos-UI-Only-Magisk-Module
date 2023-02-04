@@ -12,7 +12,7 @@
 
 ## Requirements
 - Android 9 and up
-- In-built Dolby Audio Processing dms-hal-2-0 or dms-hal-1-0 service
+- Supported ROM in-built Dolby Audio Processing dms-hal-2-0 or dms-hal-1-0 service
 - Magisk installed
 
 ## Installation Guide & Download Link

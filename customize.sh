@@ -38,6 +38,9 @@ fi
 
 # optionals
 OPTIONALS=/sdcard/optionals.prop
+if [ ! -f $OPTIONALS ]; then
+  touch $OPTIONALS
+fi
 
 # info
 MODVER=`grep_prop version $MODPATH/module.prop`
@@ -76,14 +79,12 @@ if [ "$BOOTMODE" != true ]; then
   mount -o rw -t auto /dev/block/bootdevice/by-name/metadata /metadata
 fi
 
-# sepolicy.rule
-FILE=$MODPATH/sepolicy.sh
-DES=$MODPATH/sepolicy.rule
-if [ "`grep_prop sepolicy.sh $OPTIONALS`" != 1 ]\
+# sepolicy
+FILE=$MODPATH/sepolicy.rule
+DES=$MODPATH/sepolicy.pfsd
+if [ "`grep_prop sepolicy.sh $OPTIONALS`" == 1 ]\
 && [ -f $FILE ]; then
   mv -f $FILE $DES
-  sed -i 's/magiskpolicy --live "//g' $DES
-  sed -i 's/"//g' $DES
 fi
 
 # mod ui
@@ -106,10 +107,10 @@ fi
 
 # cleaning
 ui_print "- Cleaning..."
-PKG="com.dolby.daxappui com.dolby.daxservice"
+PKG=`cat $MODPATH/package.txt`
 if [ "$BOOTMODE" == true ]; then
   for PKGS in $PKG; do
-    RES=`pm uninstall $PKGS`
+    RES=`pm uninstall $PKGS 2>/dev/null`
   done
 fi
 rm -f /data/vendor/dolby/dax_sqlite3.db
@@ -291,7 +292,7 @@ if [ "$FILE" ]; then
   ui_print "- daxService.apk is found"
   ui_print " "
 else
-  if getprop | grep -Eq init.svc.dms-hal-2-0; then
+  if [ "`getprop init.svc.dms-hal-2-0`" ]; then
     if [ "`getprop init.svc.dms-hal-2-0`" == stopped ]; then
       start dms-hal-2-0
       sleep 1
@@ -302,7 +303,7 @@ else
     else
       abort "- This module doesn't support the specific Dolby service."
     fi
-  elif getprop | grep -Eq init.svc.dms-hal-1-0; then
+  elif [ "`getprop init.svc.dms-hal-1-0`" ]; then
     if [ "`getprop init.svc.dms-hal-1-0`" == stopped ]; then
       start dms-hal-1-0
       sleep 1
