@@ -5,7 +5,7 @@
 - The MIT license specified here is for the Magisk Module only, not for Dolby apps and blobs.
 
 ## Descriptions
-- Dolby Atmos equalizer user interface only for any ROM that has in-built Dolby Audio Processing soundfx and service.
+- Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing soundfx and service.
 
 ## Screenshots
 - https://t.me/androidryukimodsdiscussions/66074
