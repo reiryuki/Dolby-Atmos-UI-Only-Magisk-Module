@@ -1,7 +1,7 @@
 MODPATH=${0%/*}
 API=`getprop ro.build.version.sdk`
 
-# debug
+# log
 exec 2>$MODPATH/debug.log
 set -x
 
@@ -16,27 +16,22 @@ resetprop vendor.audio.dolby.ds2.hardbypass false
 
 # restart
 if [ "$API" -ge 24 ]; then
-  SVC=audioserver
+  SERVER=audioserver
 else
-  SVC=mediaserver
+  SERVER=mediaserver
 fi
-PID=`pidof $SVC`
+PID=`pidof $SERVER`
 if [ "$PID" ]; then
-  killall $SVC
+  killall $SERVER
 fi
 
-# function
-start_service() {
-for NAMES in $NAME; do
-  if [ "`getprop init.svc.$NAMES`" == stopped ]; then
-    start $NAMES
+# start
+NAMES="dms-hal-2-0 dms-hal-1-0"
+for NAME in $NAMES; do
+  if [ "`getprop init.svc.$NAME`" == stopped ]; then
+    start $NAME
   fi
 done
-}
-
-# run
-NAME="dms-hal-2-0 dms-hal-1-0"
-start_service
 
 # wait
 until [ "`getprop sys.boot_completed`" == "1" ]; do
@@ -48,11 +43,21 @@ PKG=com.dolby.daxappui
 if [ "$API" -ge 30 ]; then
   appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
 fi
+PKGOPS=`appops get $PKG`
+UID=`dumpsys package $PKG 2>/dev/null | grep -m 1 userId= | sed 's/    userId=//'`
+if [ "$UID" -gt 9999 ]; then
+  UIDOPS=`appops get --uid "$UID"`
+fi
 
 # allow
 PKG=com.dolby.daxservice
 if [ "$API" -ge 30 ]; then
   appops set $PKG AUTO_REVOKE_PERMISSIONS_IF_UNUSED ignore
+fi
+PKGOPS=`appops get $PKG`
+UID=`dumpsys package $PKG 2>/dev/null | grep -m 1 userId= | sed 's/    userId=//'`
+if [ "$UID" -gt 9999 ]; then
+  UIDOPS=`appops get --uid "$UID"`
 fi
 
 # function
@@ -68,29 +73,24 @@ check_audioserver() {
 if [ "$NEXTPID" ]; then
   PID=$NEXTPID
 else
-  PID=`pidof $SVC`
+  PID=`pidof $SERVER`
 fi
-sleep 10
+sleep 15
 stop_log
-NEXTPID=`pidof $SVC`
-if [ "`getprop init.svc.$SVC`" != stopped ]; then
+NEXTPID=`pidof $SERVER`
+if [ "`getprop init.svc.$SERVER`" != stopped ]; then
   until [ "$PID" != "$NEXTPID" ]; do
     check_audioserver
   done
   killall $PROC
   check_audioserver
 else
-  start $SVC
+  start $SERVER
   check_audioserver
 fi
 }
 
 # check
-if [ "$API" -ge 24 ]; then
-  SVC=audioserver
-else
-  SVC=mediaserver
-fi
 PROC="com.dolby.daxservice com.dolby.daxappui"
 killall $PROC
 check_audioserver
