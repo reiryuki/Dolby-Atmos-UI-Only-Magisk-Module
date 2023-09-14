@@ -1,6 +1,6 @@
 # boot mode
 if [ "$BOOTMODE" != true ]; then
-  abort "- Please flash via Magisk app only!"
+  abort "- Please install via Magisk/KernelSU app only!"
 fi
 
 # space
@@ -49,7 +49,7 @@ fi
 UUID=9d4921da-8225-4f29-aefa-39537a04bcaa
 if [ "$BOOTMODE" == true ]; then
   if ! dumpsys media.audio_flinger | grep -q $UUID; then
-    abort "- This ROM doesn't have Dolby Audio Processing service."
+    abort "- 9d4921da-8225-4f29-aefa-39537a04bcaa UUID not found."
   fi
 fi
 
@@ -61,10 +61,16 @@ magisk_setup
 
 # path
 SYSTEM=`realpath $MIRROR/system`
-PRODUCT=`realpath $MIRROR/product`
-VENDOR=`realpath $MIRROR/vendor`
-SYSTEM_EXT=`realpath $MIRROR/system_ext`
 if [ "$BOOTMODE" == true ]; then
+  if [ ! -d $MIRROR/vendor ]; then
+    mount_vendor_to_mirror
+  fi
+  if [ ! -d $MIRROR/product ]; then
+    mount_product_to_mirror
+  fi
+  if [ ! -d $MIRROR/system_ext ]; then
+    mount_system_ext_to_mirror
+  fi
   if [ ! -d $MIRROR/odm ]; then
     mount_odm_to_mirror
   fi
@@ -72,6 +78,9 @@ if [ "$BOOTMODE" == true ]; then
     mount_my_product_to_mirror
   fi
 fi
+VENDOR=`realpath $MIRROR/vendor`
+PRODUCT=`realpath $MIRROR/product`
+SYSTEM_EXT=`realpath $MIRROR/system_ext`
 ODM=`realpath $MIRROR/odm`
 MY_PRODUCT=`realpath $MIRROR/my_product`
 
@@ -284,8 +293,7 @@ hide_app
 FILE=`find $SYSTEM $PRODUCT $SYSTEM_EXT $VENDOR\
        $MY_PRODUCT -type f -name daxService.apk`
 if [ "$FILE" ]; then
-  ui_print "- daxService.apk is found"
-  ui_print " "
+  true
 else
   if [ "`getprop init.svc.dms-hal-2-0`" ]; then
     if [ "`getprop init.svc.dms-hal-2-0`" == stopped ]; then
@@ -293,13 +301,13 @@ else
       sleep 1
     fi
     if [ "`pidof vendor.dolby.hardware.dms@2.0-service`" ]; then
-      ui_print "- Using daxService.apk dms-hal-2-0"
+      ui_print "- Using daxService.apk for dms-hal-2-0"
       cp -rf $MODPATH/system_2.0/* $MODPATH/system
     else
       if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
         unmount_mirror
       fi
-      abort "- This module doesn't support the specific Dolby service."
+      abort "- vendor.dolby.hardware.dms@2.0-service not found."
     fi
   elif [ "`getprop init.svc.dms-hal-1-0`" ]; then
     if [ "`getprop init.svc.dms-hal-1-0`" == stopped ]; then
@@ -307,19 +315,19 @@ else
       sleep 1
     fi
     if [ "`pidof vendor.dolby.hardware.dms@1.0-service`" ]; then
-      ui_print "- Using daxService.apk dms-hal-1-0"
+      ui_print "- Using daxService.apk for dms-hal-1-0"
       cp -rf $MODPATH/system_1.0/* $MODPATH/system
     else
       if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
         unmount_mirror
       fi
-      abort "- This module doesn't support the specific Dolby service."
+      abort "- vendor.dolby.hardware.dms@1.0-service not found."
     fi
   else
     if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
       unmount_mirror
     fi
-    abort "- This module doesn't support the specific Dolby service."
+    abort "- dms-hal-2-0 or dms-hal-1-0 not found."
   fi
   ui_print " "
 fi
