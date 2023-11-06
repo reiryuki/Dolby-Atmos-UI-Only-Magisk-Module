@@ -14,6 +14,19 @@ if [ "$BOOTMODE" != true ]; then
   ui_print " "
 fi
 
+# optionals
+OPTIONALS=/sdcard/optionals.prop
+if [ ! -f $OPTIONALS ]; then
+  touch $OPTIONALS
+fi
+
+# debug
+if [ "`grep_prop debug.log $OPTIONALS`" == 1 ]; then
+  ui_print "- The install log will contain detailed information"
+  set -x
+  ui_print " "
+fi
+
 # run
 . $MODPATH/function.sh
 
@@ -83,12 +96,6 @@ PRODUCT=`realpath $MIRROR/product`
 SYSTEM_EXT=`realpath $MIRROR/system_ext`
 ODM=`realpath $MIRROR/odm`
 MY_PRODUCT=`realpath $MIRROR/my_product`
-
-# optionals
-OPTIONALS=/sdcard/optionals.prop
-if [ ! -f $OPTIONALS ]; then
-  touch $OPTIONALS
-fi
 
 # sepolicy
 FILE=$MODPATH/sepolicy.rule
@@ -183,12 +190,14 @@ fi
 # cleanup
 DIR=/data/adb/modules/$MODID
 FILE=$DIR/module.prop
+PREVMODNAME=`grep_prop name $FILE`
 if [ "`grep_prop data.cleanup $OPTIONALS`" == 1 ]; then
   sed -i 's|^data.cleanup=1|data.cleanup=0|g' $OPTIONALS
   ui_print "- Cleaning-up $MODID data..."
   cleanup
   ui_print " "
-elif [ -d $DIR ] && ! grep -q "$MODNAME" $FILE; then
+elif [ -d $DIR ]\
+&& [ "$PREVMODNAME" != "$MODNAME" ]; then
   ui_print "- Different version detected"
   ui_print "  Cleaning-up $MODID data..."
   cleanup
