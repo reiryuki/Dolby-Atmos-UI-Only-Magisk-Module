@@ -62,7 +62,9 @@ fi
 UUID=9d4921da-8225-4f29-aefa-39537a04bcaa
 if [ "$BOOTMODE" == true ]; then
   if ! dumpsys media.audio_flinger | grep -q $UUID; then
-    abort "- 9d4921da-8225-4f29-aefa-39537a04bcaa UUID not found."
+    ui_print "! 9d4921da-8225-4f29-aefa-39537a04bcaa UUID not found."
+    ui_print "  This ROM doesn't have Dolby Audio Processing soundfx."
+    abort
   fi
 fi
 
@@ -316,7 +318,9 @@ else
       if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
         unmount_mirror
       fi
-      abort "- vendor.dolby.hardware.dms@2.0-service not found."
+      ui_print "! vendor.dolby.hardware.dms@2.0-service not found."
+      ui_print "  This ROM doesn't have dms-hal-2-0 service."
+      abort
     fi
   elif [ "`getprop init.svc.dms-hal-1-0`" ]; then
     if [ "`getprop init.svc.dms-hal-1-0`" == stopped ]; then
@@ -330,13 +334,16 @@ else
       if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
         unmount_mirror
       fi
-      abort "- vendor.dolby.hardware.dms@1.0-service not found."
+      ui_print "! vendor.dolby.hardware.dms@1.0-service not found."
+      ui_print "  This ROM doesn't have dms-hal-1-0 service."
+      abort
     fi
   else
     if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
       unmount_mirror
     fi
-    abort "- dms-hal-2-0 or dms-hal-1-0 not found."
+    ui_print "! This ROM doesn't have dms-hal-2-0 or dms-hal-1-0 service."
+    abort
   fi
   ui_print " "
 fi
@@ -348,7 +355,8 @@ FILE=$MODPATH/service.sh
 if [ "`grep_prop audio.rotation $OPTIONALS`" == 1 ]; then
   ui_print "- Enables ro.audio.monitorRotation=true"
   sed -i '1i\
-resetprop ro.audio.monitorRotation true' $FILE
+resetprop ro.audio.monitorRotation true\
+resetprop ro.audio.monitorWindowRotation true' $FILE
   ui_print " "
 fi
 
