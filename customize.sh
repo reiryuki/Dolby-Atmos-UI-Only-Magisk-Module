@@ -6,16 +6,19 @@ fi
 # space
 ui_print " "
 
+# var
+UID=`id -u`
+
 # log
 if [ "$BOOTMODE" != true ]; then
-  FILE=/sdcard/$MODID\_recovery.log
+  FILE=/storage/emulated/"$UID"/$MODID\_recovery.log
   ui_print "- Log will be saved at $FILE"
   exec 2>$FILE
   ui_print " "
 fi
 
 # optionals
-OPTIONALS=/sdcard/optionals.prop
+OPTIONALS=/storage/emulated/"$UID"/optionals.prop
 if [ ! -f $OPTIONALS ]; then
   touch $OPTIONALS
 fi
@@ -110,7 +113,7 @@ fi
 # mod ui
 if [ "`grep_prop mod.ui $OPTIONALS`" == 1 ]; then
   APP=DaxUI
-  FILE=/sdcard/$APP.apk
+  FILE=/storage/emulated/"$UID"/$APP.apk
   DIR=`find $MODPATH/system -type d -name $APP`
   ui_print "- Using modified UI apk..."
   if [ -f $FILE ]; then
@@ -342,8 +345,7 @@ else
     if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
       unmount_mirror
     fi
-    ui_print "! This ROM doesn't have dms-hal-2-0 or dms-hal-1-0 service."
-    abort
+    abort "! This ROM doesn't have dms-hal-2-0 or dms-hal-1-0 service."
   fi
   ui_print " "
 fi
@@ -355,8 +357,8 @@ FILE=$MODPATH/service.sh
 if [ "`grep_prop audio.rotation $OPTIONALS`" == 1 ]; then
   ui_print "- Enables ro.audio.monitorRotation=true"
   sed -i '1i\
-resetprop ro.audio.monitorRotation true\
-resetprop ro.audio.monitorWindowRotation true' $FILE
+resetprop -n ro.audio.monitorRotation true\
+resetprop -n ro.audio.monitorWindowRotation true' $FILE
   ui_print " "
 fi
 
