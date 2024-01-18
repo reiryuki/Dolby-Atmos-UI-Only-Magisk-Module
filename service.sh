@@ -24,10 +24,8 @@ if [ "$API" -ge 24 ]; then
 else
   SERVER=mediaserver
 fi
-PID=`pidof $SERVER`
-if [ "$PID" ]; then
-  killall $SERVER android.hardware.audio@4.0-service-mediatek
-fi
+killall $SERVER\
+ android.hardware.audio@4.0-service-mediatek
 
 # start
 NAMES="dms-hal-2-0 dms-hal-1-0"

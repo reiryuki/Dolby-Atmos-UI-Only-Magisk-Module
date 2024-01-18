@@ -53,8 +53,9 @@ ui_print " "
 # sdk
 NUM=28
 if [ "$API" -lt $NUM ]; then
-  ui_print "! Unsupported SDK $API. You have to upgrade your"
-  ui_print "  Android version at least SDK API $NUM to use this module."
+  ui_print "! Unsupported SDK $API."
+  ui_print "  You have to upgrade your Android version"
+  ui_print "  at least SDK API $NUM to use this module."
   abort
 else
   ui_print "- SDK $API"
@@ -65,7 +66,7 @@ fi
 UUID=9d4921da-8225-4f29-aefa-39537a04bcaa
 if [ "$BOOTMODE" == true ]; then
   if ! dumpsys media.audio_flinger | grep -q $UUID; then
-    ui_print "! 9d4921da-8225-4f29-aefa-39537a04bcaa UUID not found."
+    ui_print "! $UUID UUID not found."
     ui_print "  This ROM doesn't have Dolby Audio Processing soundfx."
     abort
   fi
@@ -79,23 +80,6 @@ magisk_setup
 
 # path
 SYSTEM=`realpath $MIRROR/system`
-if [ "$BOOTMODE" == true ]; then
-  if [ ! -d $MIRROR/vendor ]; then
-    mount_vendor_to_mirror
-  fi
-  if [ ! -d $MIRROR/product ]; then
-    mount_product_to_mirror
-  fi
-  if [ ! -d $MIRROR/system_ext ]; then
-    mount_system_ext_to_mirror
-  fi
-  if [ ! -d $MIRROR/odm ]; then
-    mount_odm_to_mirror
-  fi
-  if [ ! -d $MIRROR/my_product ]; then
-    mount_my_product_to_mirror
-  fi
-fi
 VENDOR=`realpath $MIRROR/vendor`
 PRODUCT=`realpath $MIRROR/product`
 SYSTEM_EXT=`realpath $MIRROR/system_ext`
@@ -172,12 +156,17 @@ NAMES="dolbyatmos DolbyAudio MotoDolby
 conflict
 NAMES=SoundEnhancement
 FILE=/data/adb/modules/$NAMES/module.prop
-if grep -q 'Dolby Atmos Xperia' $FILE; then
+if grep -q 'and Dolby Atmos' $FILE; then
   conflict
 fi
 NAMES=MiSound
 FILE=/data/adb/modules/$NAMES/module.prop
 if grep -q 'and Dolby Atmos' $FILE; then
+  conflict
+fi
+NAMES=DolbyAtmosSpatialSound
+FILE=/data/adb/modules/$NAMES/module.prop
+if grep -q 'Dolby Atmos and' $FILE; then
   conflict
 fi
 
@@ -302,13 +291,12 @@ done
 # hide
 APPS="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
 hide_oat
-APPS="MusicFX MotoDolbyDax3 MotoDolbyV3 DolbyAtmos OPSoundTuner"
+APPS="MusicFX MotoDolbyDax3 MotoDolbyV3 DolbyAtmos
+      OPSoundTuner"
 hide_app
 FILE=`find $SYSTEM $PRODUCT $SYSTEM_EXT $VENDOR\
        $MY_PRODUCT -type f -name daxService.apk`
-if [ "$FILE" ]; then
-  true
-else
+if [ "$BOOTMODE" == true ] && [ ! "$FILE" ]; then
   if [ "`getprop init.svc.dms-hal-2-0`" ]; then
     if [ "`getprop init.svc.dms-hal-2-0`" == stopped ]; then
       start dms-hal-2-0
@@ -318,9 +306,7 @@ else
       ui_print "- Using daxService.apk for dms-hal-2-0"
       cp -rf $MODPATH/system_2.0/* $MODPATH/system
     else
-      if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
-        unmount_mirror
-      fi
+      unmount_mirror
       ui_print "! vendor.dolby.hardware.dms@2.0-service not found."
       ui_print "  This ROM doesn't have dms-hal-2-0 service."
       abort
@@ -334,17 +320,13 @@ else
       ui_print "- Using daxService.apk for dms-hal-1-0"
       cp -rf $MODPATH/system_1.0/* $MODPATH/system
     else
-      if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
-        unmount_mirror
-      fi
+      unmount_mirror
       ui_print "! vendor.dolby.hardware.dms@1.0-service not found."
       ui_print "  This ROM doesn't have dms-hal-1-0 service."
       abort
     fi
   else
-    if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
-      unmount_mirror
-    fi
+    unmount_mirror
     abort "! This ROM doesn't have dms-hal-2-0 nor dms-hal-1-0 service."
   fi
   ui_print " "
@@ -363,9 +345,7 @@ resetprop -n ro.audio.monitorWindowRotation true' $FILE
 fi
 
 # unmount
-if [ "$BOOTMODE" == true ] && [ ! "$MAGISKPATH" ]; then
-  unmount_mirror
-fi
+unmount_mirror
 
 
 
