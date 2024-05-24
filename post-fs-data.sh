@@ -45,22 +45,6 @@ chmod 0755 $MODPATH/*/libmagiskpolicy.so
 FILE=$MODPATH/sepolicy.pfsd
 sepolicy_sh
 
-# list
-PKGS=`cat $MODPATH/package.txt`
-for PKG in $PKGS; do
-  magisk --denylist rm $PKG 2>/dev/null
-  magisk --sulist add $PKG 2>/dev/null
-done
-if magisk magiskhide sulist; then
-  for PKG in $PKGS; do
-    magisk magiskhide add $PKG
-  done
-else
-  for PKG in $PKGS; do
-    magisk magiskhide rm $PKG
-  done
-fi
-
 # directory
 DIR=/data/vendor/dolby
 mkdir -p $DIR
@@ -72,7 +56,7 @@ chcon u:object_r:vendor_data_file:s0 $DIR
 FILE=$MODPATH/cleaner.sh
 if [ -f $FILE ]; then
   . $FILE
-  mv -f $FILE $FILE\.txt
+  mv -f $FILE $FILE.txt
 fi
 
 
