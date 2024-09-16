@@ -1,8 +1,8 @@
 id=DolbyAtmos
 name=Dolby Atmos User Interface Only
-version=v1.17
-versionCode=17
+version=v1.18
+versionCode=18
 author=Rei Ryuki the Fixer
-description=Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing soundfx and service.
+description=Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing sound effect and service.
 
 

@@ -1,6 +1,6 @@
 # boot mode
 if [ "$BOOTMODE" != true ]; then
-  abort "- Please install via Magisk/KernelSU app only!"
+  abort "! Please install via Magisk/KernelSU app only!"
 fi
 
 # space
@@ -8,6 +8,7 @@ ui_print " "
 
 # var
 UID=`id -u`
+[ ! "$UID" ] && UID=0
 
 # log
 if [ "$BOOTMODE" != true ]; then
@@ -202,7 +203,7 @@ if [ "`grep_prop data.cleanup $OPTIONALS`" == 1 ]; then
   ui_print " "
 elif [ -d $DIR ]\
 && [ "$PREVMODNAME" != "$MODNAME" ]; then
-  ui_print "- Different version detected"
+  ui_print "- Different module name is detected"
   ui_print "  Cleaning-up $MODID data..."
   cleanup
   ui_print " "
@@ -256,7 +257,7 @@ for APP in $APPS; do
 done
 }
 replace_dir() {
-if [ -d $DIR ]; then
+if [ -d $DIR ] && [ ! -d $MODPATH$MODDIR ]; then
   REPLACE="$REPLACE $MODDIR"
 fi
 }
@@ -299,9 +300,10 @@ done
 }
 
 # hide
-APPS="`ls $MODPATH/system/priv-app` `ls $MODPATH/system/app`"
+APPS="`ls $MODPATH/system/priv-app`
+      `ls $MODPATH/system/app`"
 hide_oat
-APPS="MusicFX MotoDolbyDax3 MotoDolbyV3 DolbyAtmos
+APPS="$APPS MusicFX MotoDolbyDax3 MotoDolbyV3 DolbyAtmos
       OPSoundTuner"
 hide_app
 FILE=`find $SYSTEM $PRODUCT $SYSTEM_EXT $VENDOR\

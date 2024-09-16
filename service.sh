@@ -105,7 +105,7 @@ check_audioserver
 }
 
 # check
-PROC="com.dolby.daxservice com.dolby.daxappui"
+PROC=`cat $MODPATH/package.txt`
 killall $PROC
 check_audioserver
 
