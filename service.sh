@@ -106,11 +106,7 @@ fi
 sleep 15
 stop_log
 NEXTPID=`pidof $SERVER`
-if [ "`getprop init.svc.$SERVER`" != stopped ]; then
-  [ "$PID" != "$NEXTPID" ] && killall $PROC
-else
-  start $SERVER
-fi
+[ "$PID" != "$NEXTPID" ] && killall $PROC
 check_audioserver
 }
 
