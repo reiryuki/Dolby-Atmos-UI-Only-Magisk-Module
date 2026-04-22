@@ -5,7 +5,53 @@
 - The MIT license specified here is for the Magisk Module only, not for Dolby apps and blobs.
 
 ## Descriptions
-- Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing sound effect and service.
+Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing sound effect and service.
+
+## Changelog
+
+v2.1
+- Fix a crash in Miui ROM
+- Fix wrong target in latest KernelSU
+
+v2.0
+- Fix UUID detection
+- Fix integrity failure if using permissive.mode=1
+- Add Dolby Optionals support
+- Abort installation if fail to mount mirror system
+
+v1.19
+- Move apk to priv-app
+- Add Action button to clear apps caches
+- Fix bug in uninstall.sh
+
+v1.18
+- Fix selinux denials
+
+v1.17
+- Fix conflict with modules_update while installing via recovery if Magisk installed
+- Fix MagiskHide & SUList
+
+v1.16
+- Add new Magisk and Kitsune Mask support (independent mirror)
+- Remount partitions before mounting mirror to prevent mount failure caused by device/resource busy
+- Removes conflicted modules
+
+v1.15
+- Redirect /storage/emulated to /data/media
+
+v1.14
+- Redirect /sdcard to /storage/emulated/"$UID"
+- Fix MagiskHide & SUList
+- Update sepolicy rules
+
+v1.13
+- Sets system property ro.audio.monitorWindowRotation=true if audio.rotation=1 at optionals.prop
+- Fix fatal exceptions
+
+v1.12
+- Specify UID at script
+- Add optional debug.log=1 for more detailed install log
+- Update sepolicy rules
 
 ## Screenshots
 - https://t.me/androidryukimodsdiscussions/66074
@@ -16,8 +62,8 @@
 - Magisk or Kitsune Mask or KernelSU or Apatch installed
 
 ## Installation Guide & Download Link
-- If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs first
-- Install this module https://www.pling.com/p/1742547/ via Magisk app or KernelSU app only
+- If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs or https://github.com/KernelSU-Modules-Repo/magic_mount_rs or https://github.com/KernelSU-Modules-Repo/hybrid_mount first depending on ROM compatibility
+- Install this module via Magisk app or KernelSU app or Apatch app only
 - Reboot
 - If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards
 - If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot afterwards
