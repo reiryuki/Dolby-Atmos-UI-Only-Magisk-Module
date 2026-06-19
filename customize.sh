@@ -310,7 +310,7 @@ APPS="`ls $MODPATH/system/priv-app`
       `ls $MODPATH/system/app`"
 hide_oat
 APPS="$APPS MusicFX MotoDolbyDax3 MotoDolbyV3 DolbyAtmos
-      OPSoundTuner"
+      OPSoundTuner LunarisDolby"
 hide_app
 FILE=`find $SYSTEM $PRODUCT $SYSTEM_EXT $VENDOR\
        $MY_PRODUCT -type f -name daxService.apk`

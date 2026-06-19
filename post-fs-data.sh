@@ -5,6 +5,26 @@ MODPATH=${0%/*}
 exec 2>$MODPATH/debug-pfsd.log
 set -x
 
+# function
+set_perm() {
+  chown $2:$3 $1 || return 1
+  chmod $4 $1 || return 1
+  local CON=$5
+  [ -z $CON ] && CON=u:object_r:system_file:s0
+  chcon $CON $1 || return 1
+}
+set_perm_recursive() {
+  find $1 -type d 2>/dev/null | while read dir; do
+    set_perm $dir $2 $3 $4 $6
+  done
+  find $1 -type f -o -type l 2>/dev/null | while read file; do
+    set_perm $file $2 $3 $5 $6
+  done
+}
+
+# permission
+set_perm_recursive $MODPATH 0 0 0755 0644
+
 # var
 ABI=`getprop ro.product.cpu.abi`
 if [ ! -d $MODPATH/vendor ]\
@@ -23,9 +43,9 @@ fi
 magisk_permissive() {
 if [ "`toybox cat $FILE`" = 1 ]; then
   if [ -x "`command -v magiskpolicy`" ]; then
-	magiskpolicy --live "permissive *"
+    magiskpolicy --live "permissive *"
   else
-	$MODPATH/$ABI/libmagiskpolicy.so --live "permissive *"
+    $MODPATH/$ABI/libmagiskpolicy.so --live "permissive *"
   fi
 fi
 }
@@ -67,18 +87,11 @@ chcon -R u:object_r:system_lib_file:s0 $MODPATH/system/lib*
 chcon -R u:object_r:vendor_configs_file:s0 $MODPATH/system/odm/etc
 chmod 0751 $MODPATH$MODSYSTEM/vendor/bin
 chmod 0751 $MODPATH$MODSYSTEM/vendor/bin/hw
-chmod 0755 $MODPATH$MODSYSTEM/vendor/odm/bin
-chmod 0755 $MODPATH$MODSYSTEM/vendor/odm/bin/hw
 FILES=`find $MODPATH$MODSYSTEM/vendor/bin\
             $MODPATH$MODSYSTEM/vendor/odm/bin -type f`
 for FILE in $FILES; do
   chmod 0755 $FILE
   chown 0.2000 $FILE
-done
-FILES=`find $MODPATH$MODSYSTEM/vendor/lib* -type f`
-for FILE in $FILES; do
-  chmod 0644 $FILE
-  chown 0.0 $FILE
 done
 chcon -R u:object_r:vendor_file:s0 $MODPATH$MODSYSTEM/vendor
 chcon -R u:object_r:vendor_configs_file:s0 $MODPATH$MODSYSTEM/vendor/etc

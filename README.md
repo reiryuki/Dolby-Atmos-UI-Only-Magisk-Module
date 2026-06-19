@@ -9,6 +9,12 @@ Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolb
 
 ## Changelog
 
+v2.2
+- Update libmagiskpolicy.so from Magisk (stable) 30.7 (30700)
+- Resets module folders/files permissions at post-fs-data
+- Move _uninstall.log to /data/adb/logs/
+- Hides LunarisDolby.apk
+
 v2.1
 - Fix a crash in Miui ROM
 - Fix wrong target in latest KernelSU
@@ -48,11 +54,6 @@ v1.13
 - Sets system property ro.audio.monitorWindowRotation=true if audio.rotation=1 at optionals.prop
 - Fix fatal exceptions
 
-v1.12
-- Specify UID at script
-- Add optional debug.log=1 for more detailed install log
-- Update sepolicy rules
-
 ## Screenshots
 - https://t.me/androidryukimodsdiscussions/66074
 
@@ -62,8 +63,8 @@ v1.12
 - Magisk or Kitsune Mask or KernelSU or Apatch installed
 
 ## Installation Guide & Download Link
-- If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs or https://github.com/KernelSU-Modules-Repo/magic_mount_rs or https://github.com/KernelSU-Modules-Repo/hybrid_mount first depending on ROM compatibility
-- Install this module https://devuploads.com/29j1sp0gjj1k via Magisk app or KernelSU app or Apatch app only
+- If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs or https://github.com/KernelSU-Modules-Repo/magic_mount_rs or https://github.com/KernelSU-Modules-Repo/hybrid_mount or https://github.com/maxsteeel/nomount first depending on ROM compatibility
+- Install this module via Magisk app or KernelSU app or Apatch app only
 - Reboot
 - If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards
 - If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot afterwards
