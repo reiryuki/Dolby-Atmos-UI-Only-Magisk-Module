@@ -96,9 +96,6 @@ done
 chcon -R u:object_r:vendor_file:s0 $MODPATH$MODSYSTEM/vendor
 chcon -R u:object_r:vendor_configs_file:s0 $MODPATH$MODSYSTEM/vendor/etc
 chcon -R u:object_r:vendor_configs_file:s0 $MODPATH$MODSYSTEM/vendor/odm/etc
-chcon u:object_r:vendor_hal_file:s0 $MODPATH$MODSYSTEM/vendor/lib*/hw
-#chcon u:object_r:hal_dms_default_exec:s0 $MODPATH$MODSYSTEM/vendor/bin/hw/vendor.dolby*.hardware.dms*@*-service
-#chcon u:object_r:hal_dms_default_exec:s0 $MODPATH$MODSYSTEM/vendor/odm/bin/hw/vendor.dolby*.hardware.dms*@*-service
 
 # cleaning
 FILE=$MODPATH/cleaner.sh

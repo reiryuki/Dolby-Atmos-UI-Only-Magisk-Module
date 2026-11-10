@@ -1,8 +1,8 @@
 id=DolbyAtmos
 name=Dolby Atmos User Interface Only
-version=v2.2
-versionCode=22
+version=v2.3
+versionCode=23
 author=Rei Ryuki the Fixer
-description=Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing sound effect and service.
+description=Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing sound effect and service in Android 9 (SDK 28) and up.
 
 

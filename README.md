@@ -4,16 +4,28 @@
 - Dolby apps and blobs are owned by Dolby™.
 - The MIT license specified here is for the Magisk Module only, not for Dolby apps and blobs.
 
-## Descriptions
+## Description
 Dolby Atmos equalizer user interface app only for any ROM that has in-built Dolby Audio Processing sound effect and service.
 
-## Changelog
+## Screenshots
+https://t.me/androidryukimodsdiscussions/66074
 
-v2.2
+## Requirements
+- Android 9 (SDK 28) and up
+- Supported ROM in-built Dolby Audio Processing sound effect with dms-hal-2-0 or dms-hal-1-0 service
+- Magisk or Kitsune Mask or KernelSU or Apatch installed
+
+## Download Links and Changelog
+
+v2.3 https://github.com/reiryuki/Dolby-Atmos-UI-Only-Magisk-Module
+- Update libmagiskpolicy.so from Magisk (debug) 31.0 (31000)
+- Add a new optional dolby.mod_xml to let you using your modified/custom dax-default.xml. Please read Optionals below.
+
+v2.2 https://move2link.co/654a1d0
 - Update libmagiskpolicy.so from Magisk (stable) 30.7 (30700)
 - Resets module folders/files permissions at post-fs-data
 - Move _uninstall.log to /data/adb/logs/
-- Hides LunarisDolby.apk
+- Hides in-bulit LunarisDolby.apk
 
 v2.1
 - Fix a crash in Miui ROM
@@ -31,7 +43,7 @@ v1.19
 - Fix bug in uninstall.sh
 
 v1.18
-- Fix selinux denials
+- Fix sepolicy denials
 
 v1.17
 - Fix conflict with modules_update while installing via recovery if Magisk installed
@@ -48,29 +60,17 @@ v1.15
 v1.14
 - Redirect /sdcard to /storage/emulated/"$UID"
 - Fix MagiskHide & SUList
-- Update sepolicy rules
-
-v1.13
-- Sets system property ro.audio.monitorWindowRotation=true if audio.rotation=1 at optionals.prop
-- Fix fatal exceptions
-
-## Screenshots
-- https://t.me/androidryukimodsdiscussions/66074
-
-## Requirements
-- Android 9 and up
-- Supported ROM in-built Dolby Audio Processing sound effect with dms-hal-2-0 or dms-hal-1-0 service
-- Magisk or Kitsune Mask or KernelSU or Apatch installed
-
-## Installation Guide & Download Link
-- If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs or https://github.com/KernelSU-Modules-Repo/magic_mount_rs or https://github.com/KernelSU-Modules-Repo/hybrid_mount or https://github.com/maxsteeel/nomount first depending on ROM compatibility
-- Install this module https://move2link.co/654a1d0 via Magisk app or KernelSU app or Apatch app only
-- Reboot
-- If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards
-- If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot afterwards
+- Fix sepolicy denials
 
 ## Download Tutorial
 https://t.me/ryukinotes/97
+
+## Installation Guide
+- If you are using KernelSU, you need to disable Unmount Modules by Default in KernelSU app settings and install https://github.com/KernelSU-Modules-Repo/meta-overlayfs or https://github.com/KernelSU-Modules-Repo/magic_mount_rs or https://github.com/KernelSU-Modules-Repo/hybrid_mount or https://github.com/maxsteeel/nomount first depending on ROM compatibility
+- Install this module via Magisk app or KernelSU app or Apatch app only
+- Reboot
+- If you are using KernelSU, you need to allow superuser list manually all package name listed in package.txt (and your home launcher app also) (enable show system apps) and reboot afterwards
+- If you are using SUList, you need to allow list manually your home launcher app (enable show system apps) and reboot afterwards
 
 ## Optionals
 - https://t.me/ryukinotes/8
@@ -80,7 +80,7 @@ https://t.me/ryukinotes/97
 - https://t.me/ryukinotes/11
 - Global: https://t.me/ryukinotes/34
 
-## Support & Bug Report
+## Support and Bug Report
 - https://t.me/ryukinotes/54
 - If you don't do above, issues will be closed immediately
 
@@ -88,9 +88,9 @@ https://t.me/ryukinotes/97
 - @HuskyDG
 - https://t.me/viperatmos
 - https://t.me/androidryukimodsdiscussions
-- You can contribute ideas about this Magisk Module here: https://t.me/androidappsportdevelopment
+- https://t.me/androidappsportdevelopment
 
-## Sponsors
-- https://t.me/ryukinotes/25
+## Sponsors and Donation
+https://t.me/ryukinotes/25
 
 
