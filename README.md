@@ -17,7 +17,7 @@ https://t.me/androidryukimodsdiscussions/66074
 
 ## Download Links and Changelog
 
-v2.3 https://github.com/reiryuki/Dolby-Atmos-UI-Only-Magisk-Module
+v2.3 https://move2link.co/3ae251c
 - Update libmagiskpolicy.so from Magisk (debug) 31.0 (31000)
 - Add a new optional dolby.mod_xml to let you using your modified/custom dax-default.xml. Please read Optionals below.
 
